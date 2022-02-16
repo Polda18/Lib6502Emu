@@ -1,4 +1,4 @@
-# CPU 6502 Emulator
+# 6502 CPU Emulator Library
 _COMING SOON_
 
 This repository will hold source code for 6502 CPU emulator library (as well as example emulator alone)
