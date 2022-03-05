@@ -47,4 +47,18 @@ TYPE    FILENAME                        COMMENT
 ----    --------                        -------
 ADD     opcodes.h                       List of all instructions and their op codes
 MOD     README.md                       Update of informations about this project
+
+
+2022-03-05
+----------
+
+Started making the CPU itself, with all the library functions to operate it
+
+TYPE    FILENAME                        COMMENT
+----    --------                        -------
+ADD     proc6502.h                      Header file defining CPU structure type
+ADD     proc6502.c                      Initialization of the CPU structure object
+ADD     lib6502.h                       Header file that will declare all of the necessary functions
+ADD     lib6502.c                       This will define the procedures of the necessary functions
+MOD     README.md                       Addition of new context
 ```
