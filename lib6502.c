@@ -18,6 +18,7 @@
 // Local definitions
 #include "proc6502.h"
 #include "opcodes.h"
+#include "errors.h"
 
 // Defined functions are here
 #include "lib6502.h"
@@ -32,6 +33,43 @@ extern _proc6502_t proc6502;
 
 // Local definitions
 // -----------------
+
+// Resolve the opcode and do stuff according to the associated instruction
+static int __execute_instruction(unsigned char opcode, char* mem) {
+    int retcode = 0;
+    
+    switch(opcode) {
+        case ADC_IM:
+            // TODO: ADC immediate
+            break;
+        case ADC_ZP:
+            // TODO: ADC zero page
+            break;
+        case ADC_ZPX:
+            // TODO: ADC zero page +X
+            break;
+        case ADC_AB:
+            // TODO: ADC absolute
+            break;
+        case ADC_ABX:
+            // TODO: ADC absolute +X
+            break;
+        case ADC_ABY:
+            // TODO: ADC absolute +Y
+            break;
+        case ADC_INX:
+            // TODO: ADC indirect X
+            break;
+        case ADC_INY:
+            // TODO: ADC indirect Y
+            break;
+        // TODO: rest of instructions
+        default:
+            retcode = ERR_OPCODE;
+    }
+
+    return retcode;
+}
 
 // TODO
 

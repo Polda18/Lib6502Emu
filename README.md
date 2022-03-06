@@ -61,4 +61,16 @@ ADD     proc6502.c                      Initialization of the CPU structure obje
 ADD     lib6502.h                       Header file that will declare all of the necessary functions
 ADD     lib6502.c                       This will define the procedures of the necessary functions
 MOD     README.md                       Addition of new context
+
+
+2022-03-06
+----------
+
+Started code for opcode instruction executions
+
+TYPE    FILENAME                        COMMENT
+----    --------                        -------
+ADD     errors.h                        Foundation of return error codes
+MOD     lib6502.c                       Addition of opcode switch to execute given instructions
+MOD     README.md                       Addition of new context
 ```
