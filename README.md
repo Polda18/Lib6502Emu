@@ -73,4 +73,15 @@ TYPE    FILENAME                        COMMENT
 ADD     errors.h                        Foundation of return error codes
 MOD     lib6502.c                       Addition of opcode switch to execute given instructions
 MOD     README.md                       Addition of new context
+
+
+2024-09-04
+----------
+
+Added flags definitions
+
+TYPE    FILENAME                        COMMENT
+----    --------                        -------
+ADD     flags.h                         Header file defining flags in CPU flags register
+MOD     README.md                       Addition of new context
 ```
