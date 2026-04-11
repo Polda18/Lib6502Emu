@@ -84,4 +84,19 @@ TYPE    FILENAME                        COMMENT
 ----    --------                        -------
 ADD     flags.h                         Header file defining flags in CPU flags register
 MOD     README.md                       Addition of new context
+
+
+2026-04-11
+----------
+
+Moved source code to src/ directory
+
+TYPE    FILENAME                        COMMENT
+----    --------                        -------
+MOV     src/*.h                         All header files
+MOV     src/*.c                         All code files
+MOD     src/errors.h                    Added a new error code
+MOD     src/li6502.c                    Added a resolve helper function for decimal mode detection
+MOD     src/proc6502.h                  Redefined flags, X, Y, and Accumulator registers to use signed char type
+MOD     README.md                       Addition of new context
 ```

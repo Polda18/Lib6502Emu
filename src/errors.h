@@ -24,4 +24,6 @@
 #define ERR_CYCLES              1003            // Cycles error
 #define ERR_OUT_OF_MEM          1004            // Insufficient memory
 
+#define ERR_DEC_OUT_OF_RANGE    8001            // Decimal mode out of range
+
 #endif

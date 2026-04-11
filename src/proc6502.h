@@ -23,10 +23,10 @@
 typedef struct {
     unsigned short PC;                          // Program Counter
     unsigned short SP;                          // Stack Pointer
-    unsigned char flags;                        // Flags register
-    unsigned char X;                            // Register X
-    unsigned char Y;                            // Register Y
-    unsigned char A;                            // Accumulator
+    char flags;                                 // Flags register
+    char X;                                     // Register X
+    char Y;                                     // Register Y
+    char A;                                     // Accumulator
 } _proc6502_t;
 
 // Import the external definition by using
@@ -34,7 +34,7 @@ typedef struct {
 
 // Memory map has to be used separately. By default, CPU does not have any internal memory
 // apart from registers and pointers. Make new memory map by first importing <limits.h>
-// and then allocating a memory space eighter using malloc or with static array pointer
+// and then allocating a memory space either using malloc or with static array pointer
 // definition. It is recommended to allocate memory with USHRT_MAX constant from <limits.h>.
 
 #endif

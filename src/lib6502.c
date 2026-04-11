@@ -15,9 +15,14 @@
  * File: lib6502.h
  ********************************************************************/
 
+// Global definitions
+#include <limits.h>
+#include <stdbool.h>
+
 // Local definitions
 #include "proc6502.h"
 #include "opcodes.h"
+#include "flags.h"
 #include "errors.h"
 
 // Defined functions are here
@@ -33,6 +38,20 @@ extern _proc6502_t proc6502;
 
 // Local definitions
 // -----------------
+
+// Resolve decimal mode
+static bool __decmode_enabled() {
+    return (bool)(proc6502.flags & FLAG_D);
+}
+
+// ADC core
+static int __execute_core_adc(char* a, char* b) {
+    int retcode = 0;
+
+    // TODO: ADC core
+
+    return retcode;
+}
 
 // Resolve the opcode and do stuff according to the associated instruction
 static int __execute_instruction(unsigned char opcode, char* mem) {
