@@ -1,5 +1,6 @@
 # 6502 CPU Emulator Library
-_COMING SOON_
+
+> _COMING SOON_
 
 This repository holds source code for 6502 CPU emulator library. Emulator libary is going to be done
 entirely in C, purely for practice purposes in low level programming. Emulator is going to behave
@@ -18,6 +19,7 @@ It will also have interrupt interface that will generate all sorts of interrupt 
 6502.
 
 ## Word of note
+
 This is going to be really long development process and I might call for your help. However, as I stated,
 this is supposed to be challenge. It could be made more effectively with C++ and using OOP, but I like
 to work with low level stuff. The debug tool will contain some example 6502 assembly codes and compiled
@@ -32,12 +34,13 @@ your own macros to be added into the project. Memory space programming may ask f
 selection of predefined profiles, or selection of custom memory map from a file.
 
 ## Development
+
 This section is used to document the development of the emulator library. Please note that once this
 project is finished, the entire README file is going to be rewritten to reflect what a developer of
 a custom 6502 emulator will need to use this library. The following list is then more or less just
 to keep track of additions to the project.
 
-```
+```txt
 2022-03-04
 ----------
 
@@ -99,4 +102,16 @@ MOD     src/errors.h                    Added a new error code
 MOD     src/li6502.c                    Added a resolve helper function for decimal mode detection
 MOD     src/proc6502.h                  Redefined flags, X, Y, and Accumulator registers to use signed char type
 MOD     README.md                       Addition of new context
+
+
+2026-04-14
+----------
+
+New implementation
+
+TYPE    FILENAME                        COMMENT
+----    --------                        -------
+MOD     src/lib6502.(c|h)               Added new functions and declarations
+MOD     src/proc6502.c                  Made the CPU object static
+MOD     README.md                       Addition of new context, tweaked formatting
 ```

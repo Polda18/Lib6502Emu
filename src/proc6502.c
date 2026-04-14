@@ -20,7 +20,7 @@
 #include "proc6502.h"
 
 // External definition of the 6502 CPU structure
-_proc6502_t proc6502 = {
+static _proc6502_t proc6502 = {
     0,              // PC       -> Program Counter
     0,              // SP       -> Stack Pointer
     0,              // flags    -> Flags register
