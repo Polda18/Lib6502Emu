@@ -12,7 +12,7 @@
  * op codes definitions in "opcodes.h" file. Choose whichever
  * version you're going to go with (Windows or Unix: Linux/MacOS)
  * ------------------------------------------------------------------
- * File: lib6502.h
+ * File: lib6502_lib.c
  ********************************************************************/
 
 // Global definitions
@@ -20,13 +20,13 @@
 #include <stdbool.h>
 
 // Local definitions
-#include "proc6502.h"
-#include "opcodes.h"
-#include "flags.h"
-#include "errors.h"
+#include "lib6502_proc.h"
+#include "lib6502_opcodes.h"
+#include "lib6502_flags.h"
+#include "lib6502_errors.h"
 
 // Defined functions are here
-#include "lib6502.h"
+#include "lib6502_lib.h"
 
 // External definition of proc6502, declared within this scope
 extern _proc6502_t proc6502;

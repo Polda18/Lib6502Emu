@@ -12,11 +12,11 @@
  * op codes definitions in "opcodes.h" file. Choose whichever
  * version you're going to go with (Windows or Unix: Linux/MacOS)
  * ------------------------------------------------------------------
- * File: proc6502.h
+ * File: lib6502_proc.h
  ********************************************************************/
 
-#ifndef __PROC6502_H__                          // If called multiple times, doesn't produce
-#define __PROC6502_H__                          // warnings about duplicate definitions
+#ifndef __LIB6502_PROC_H__                      // If called multiple times, doesn't produce
+#define __LIB6502_PROC_H__                      // warnings about duplicate definitions
 
 // 6502 CPU structure declaration: make sure to include this header in order to
 // import external definition in the dynamic link library itself (DLL on Windows, SO on Linux)

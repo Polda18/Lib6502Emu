@@ -10,18 +10,21 @@ When working here, expect to be filling in stubs (most opcode handlers are `// T
 
 ## Architecture
 
-The CPU is a single global `_proc6502_t` (PC, SP, flags, X, Y, A) defined `static` inside `src/proc6502.c`. `src/lib6502.c` reaches it via `extern _proc6502_t proc6502;` — so the `static` keyword in `proc6502.c` is misleading (the symbol is actually consumed cross-translation-unit). Treat the CPU as a singleton; do not introduce per-instance state.
+All source files share the `lib6502_` prefix: `src/lib6502_lib.{c,h}` (public API + dispatch), `src/lib6502_proc.{c,h}` (CPU state), `src/lib6502_opcodes.h`, `src/lib6502_flags.h`, `src/lib6502_errors.h`. Keep that convention when adding new files.
 
-Public API surface lives in `src/lib6502.h` and uses the `lib6502_` prefix. Currently only register getters/setters are exposed — instruction execution and CPU manipulation are still TODO. The host application owns memory: it passes a `char* mem` into execution functions (the library never allocates the address space). The recommended host allocation is `USHRT_MAX` bytes (16-bit address space).
+The CPU is a single global `_proc6502_t` (PC, SP, flags, X, Y, A) defined in `src/lib6502_proc.c` and accessed from `src/lib6502_lib.c` via `extern _proc6502_t proc6502;`. Treat the CPU as a singleton; do not introduce per-instance state.
 
-Inside `lib6502.c`, the opcode dispatch pattern is:
+Public API surface lives in `src/lib6502_lib.h` and uses the `lib6502_` prefix. Currently only register getters/setters are exposed — instruction execution and CPU manipulation are still TODO. The host application owns memory: it passes a `char* mem` into execution functions (the library never allocates the address space). The recommended host allocation is `USHRT_MAX` bytes (16-bit address space).
+
+Inside `lib6502_lib.c`, the opcode dispatch pattern is:
+
 - `__resolve_opcode_exec(opcode)` returns a `__exec_instr_t` function pointer (one `__exec_*` per opcode+addressing-mode combo).
 - `__resolve_opcode_min_max_cycles(opcode)` returns `{min, max}` cycles; `max > min` means "+1 if page boundary crossed".
-- Unknown opcodes fall through to `__exec_illegal_opcode`, which returns `ERR_OPCODE` from `errors.h`.
+- Unknown opcodes fall through to `__exec_illegal_opcode`, which returns `ERR_OPCODE` from `lib6502_errors.h`.
 
-When adding a new instruction, update **both** resolver switches plus add an `__exec_*` static function. Opcode constants follow `MNEMONIC_MODE` naming (e.g. `ADC_ZPX` for ADC zero-page,X) — see `src/opcodes.h` (sourced from http://6502.org/tutorials/6502opcodes.html).
+When adding a new instruction, update **both** resolver switches plus add an `__exec_*` static function. Opcode constants follow `MNEMONIC_MODE` naming (e.g. `ADC_ZPX` for ADC zero-page,X) — see `src/lib6502_opcodes.h` (sourced from [6502.org](http://6502.org/tutorials/6502opcodes.html)).
 
-Flag bits in `src/flags.h` (`FLAG_C/Z/I/D/B/U/V/N`) map to the standard 6502 status register layout. Decimal mode is detected via `__decmode_enabled()` checking `FLAG_D`.
+Flag bits in `src/lib6502_flags.h` (`FLAG_C/Z/I/D/B/U/V/N`) map to the standard 6502 status register layout. Decimal mode is detected via `__decmode_enabled()` checking `FLAG_D`.
 
 ## CPU variant and illegal opcodes
 
@@ -48,14 +51,44 @@ Do **not** preemptively add a variant flag, parallel dispatch tables, or `#ifdef
 
 ## Building
 
-No build scripts exist yet. To compile manually for testing during development:
+No build scripts exist yet. To compile manually for testing during development on an x86_64 host:
 
 ```sh
-# Unix shared object
-gcc -shared -fPIC -o build/x86_64/unix/lib6502.so src/*.c
+# Linux shared object
+gcc -shared -fPIC -o build/x86_64/linux/lib6502.so src/*.c
+
+# MacOS dylib — must be built on a Mac (see target matrix below)
+clang -shared -fPIC -o build/x86_64/macos/lib6502.dylib src/*.c
 
 # Windows DLL (MinGW)
 gcc -shared -o build/x86_64/win/lib6502.dll src/*.c
 ```
 
+A developer kit of header files (the `src/*.h` set) ships alongside the binaries so consumers can link against the shared library.
+
 There are no tests, no linter config, and no CI.
+
+### Planned target matrix
+
+Three architectures × three OSes, but **not all nine cells are real targets**:
+
+|              | x86_64           | ARM64                 | MIPS64                  |
+|--------------|------------------|-----------------------|-------------------------|
+| **Windows**  | yes              | yes (Windows on ARM)  | no (dropped in NT4 era) |
+| **Linux**    | yes              | yes                   | yes                     |
+| **MacOS**    | yes (Intel Macs) | yes (Apple Silicon)   | no                      |
+
+Practical implications for builds:
+
+- **Linux and MacOS are not binary-compatible** despite both being POSIX. A `.so` built on Linux will not load on MacOS, and a `.dylib` built on MacOS will not load on Linux. They need separate build pipelines and separate output directories (suggested: `build/<arch>/{win,linux,macos}/`, replacing the current `build/x86_64/{win,unix}/` placeholder).
+- **MacOS builds must run on Mac hardware** (or a licensed MacOS VM). Cross-compiling MacOS binaries from Linux/Windows requires the macOS SDK and a toolchain like osxcross, which is brittle and not officially supported by Apple. Expect to defer MacOS until a real Mac (Apple Silicon) is available.
+- **Apple Silicon is ARM64** (specifically ARMv8-A and later — Apple's M-series chips). Confirmed correct. Note that Intel Macs (pre-2020) are x86_64, so the MacOS column has both rows until those machines fully age out.
+- **Host = Intel x86/64** means non-x86_64 Linux targets (ARM64, MIPS64) are reachable via a cross-compiler (`aarch64-linux-gnu-gcc`, `mips64-linux-gnuabi64-gcc`) or via virtualization/QEMU. ARM64 Windows similarly needs MSVC's ARM64 toolchain or a Windows-on-ARM VM.
+
+A developer kit (headers only) is architecture- and OS-independent and can be packaged once per release.
+
+### Planned tooling (not yet in tree)
+
+- **Makefile** — will drive the per-target builds above. Do not create it preemptively; wait until the build matrix and output layout are finalized.
+- **`.gitignore` refresh** — the current file is the stock Visual Studio template. When the Makefile lands, it will need entries for the new `build/<arch>/<os>/` outputs and for common editor/IDE droppings (VS Code's `.vscode/`, Sublime Text's `*.sublime-workspace` / `*.sublime-project`, etc.). Refactor at the same time as the Makefile, not before.
+- **CI** — will likely be GitHub Actions when introduced. The workflow will need a Linux runner for the Linux/MIPS64/ARM64-cross builds, a Windows runner for the DLL, and a `macos-latest` (Apple Silicon) runner for the dylib.

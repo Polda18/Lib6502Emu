@@ -12,20 +12,18 @@
  * op codes definitions in "opcodes.h" file. Choose whichever
  * version you're going to go with (Windows or Unix: Linux/MacOS)
  * ------------------------------------------------------------------
- * File: flags.h
+ * File: lib6502_errors.h
  ********************************************************************/
 
-#ifndef __FLAGS_H__         // If called multiple times, doesn't produce
-#define __FLAGS_H__         // warnings about duplicate definitions
+#ifndef __LIB6502_ERRORS_H__                    // If called multiple times, doesn't produce
+#define __LIB6502_ERRORS_H__                    // warnings about duplicate definitions
 
-// Flags for flags register
-#define FLAG_C      0x01    // Carry
-#define FLAG_Z      0x02    // Zero result
-#define FLAG_I      0x04    // Interrupt disable
-#define FLAG_D      0x08    // Decimal mode
-#define FLAG_B      0x10    // Break
-#define FLAG_U      0x20    // Unassigned (flag ignored)
-#define FLAG_V      0x40    // oVerflow
-#define FLAG_N      0x80    // Negative result
+// Error codes definition
+#define ERR_OPCODE              1               // Op code couldn't be resolved
+#define ERR_OUT_OF_BOUND        2               // Access out of bound
+#define ERR_CYCLES              3               // Cycles error
+#define ERR_OUT_OF_MEM          4               // Insufficient memory
+
+#define ERR_DEC_OUT_OF_RANGE    99              // Decimal mode out of range
 
 #endif

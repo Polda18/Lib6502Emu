@@ -12,19 +12,20 @@
  * op codes definitions in "opcodes.h" file. Choose whichever
  * version you're going to go with (Windows or Unix: Linux/MacOS)
  * ------------------------------------------------------------------
- * File: proc6502.c
+ * File: lib6502_flags.h
  ********************************************************************/
 
-#include <limits.h>
+#ifndef __LIB6502_FLAGS_H__ // If called multiple times, doesn't produce
+#define __LIB6502_FLAGS_H__ // warnings about duplicate definitions
 
-#include "proc6502.h"
+// Flags for flags register
+#define FLAG_C      0x01    // Carry
+#define FLAG_Z      0x02    // Zero result
+#define FLAG_I      0x04    // Interrupt disable
+#define FLAG_D      0x08    // Decimal mode
+#define FLAG_B      0x10    // Break
+#define FLAG_U      0x20    // Unassigned (flag ignored)
+#define FLAG_V      0x40    // oVerflow
+#define FLAG_N      0x80    // Negative result
 
-// External definition of the 6502 CPU structure
-static _proc6502_t proc6502 = {
-    0,              // PC       -> Program Counter
-    0,              // SP       -> Stack Pointer
-    0,              // flags    -> Flags register
-    0,              // X        -> Register X
-    0,              // Y        -> Register Y
-    0               // A        -> Accumulator
-};
+#endif

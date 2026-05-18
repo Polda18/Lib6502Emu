@@ -12,18 +12,19 @@
  * op codes definitions in "opcodes.h" file. Choose whichever
  * version you're going to go with (Windows or Unix: Linux/MacOS)
  * ------------------------------------------------------------------
- * File: errors.h
+ * File: lib6502_proc.c
  ********************************************************************/
 
-#ifndef __ERRORS_H__                            // If called multiple times, doesn't produce
-#define __ERRORS_H__                            // warnings about duplicate definitions
+#include <limits.h>
 
-// Error codes definition
-#define ERR_OPCODE              1001            // Op code couldn't be resolved
-#define ERR_OUT_OF_BOUND        1002            // Access out of bound
-#define ERR_CYCLES              1003            // Cycles error
-#define ERR_OUT_OF_MEM          1004            // Insufficient memory
+#include "lib6502_proc.h"
 
-#define ERR_DEC_OUT_OF_RANGE    8001            // Decimal mode out of range
-
-#endif
+// External definition of the 6502 CPU structure
+_proc6502_t proc6502 = {
+    0,              // PC       -> Program Counter
+    0,              // SP       -> Stack Pointer
+    0,              // flags    -> Flags register
+    0,              // X        -> Register X
+    0,              // Y        -> Register Y
+    0               // A        -> Accumulator
+};

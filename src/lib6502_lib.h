@@ -12,11 +12,11 @@
  * op codes definitions in "opcodes.h" file. Choose whichever
  * version you're going to go with (Windows or Unix: Linux/MacOS)
  * ------------------------------------------------------------------
- * File: lib6502.h
+ * File: lib6502_lib.h
  ********************************************************************/
 
-#ifndef __LIB6502_H__                           // If called multiple times, doesn't produce
-#define __LIB6502_H__                           // warnings about duplicate definitions
+#ifndef __LIB6502_LIB_H__                       // If called multiple times, doesn't produce
+#define __LIB6502_LIB_H__                       // warnings about duplicate definitions
 
 // =========================================================================
 // Global functions declarations to use for the CPU declaration.
